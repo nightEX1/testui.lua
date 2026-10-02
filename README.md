@@ -53,3 +53,14 @@ ModernScriptUI/
   Position ตรงๆ ทุกเฟรม อินพุต
 - **Animation เปิด/ปิด**: `Animation.Open/Close` ทำ Scale 0.92→1 + Fade + Slide 16px
   ด้วย `Back`/`Quint` easing ระยะเวลา ~200–250ms ตามที่ระบุ
+
+
+## ใช้งานแบบไฟล์เดียวด้วย loadstring
+
+ไม่ต้องสร้างโฟลเดอร์ `ModernScriptUI` ใน `ReplicatedStorage` สามารถเรียกไฟล์ `main.lua` ซึ่งรวมทุก Module ไว้แล้วได้โดยตรง:
+
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nightEX1/testui.lua/main/main.lua"))()
+```
+
+ไฟล์นี้เป็นตัวโหลดแบบ standalone และจะสร้าง UI จากตัวอย่างใน `init_example.client.lua` ให้ทันที
