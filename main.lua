@@ -2,6 +2,7 @@
 -- Usage: loadstring(game:HttpGet("https://raw.githubusercontent.com/nightEX1/testui.lua/main/main.lua"))()
 local __sources = {}
 __sources['Theme'] = [=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     Theme.lua
     ค่าสีและฟอนต์กลางของทั้งระบบ ปรับที่นี่ที่เดียว ทุก Component ดึงจากนี่หมด
@@ -68,6 +69,7 @@ return Theme
 
 ]=]
 __sources['Animation'] = [=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     Animation.lua
     รวม Tween helper ทั้งหมด ใช้ easing เดียวกันทั้งระบบเพื่อความลื่นไหลสม่ำเสมอ
@@ -149,6 +151,7 @@ return Animation
 
 ]=]
 __sources['Draggable'] = [=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     Draggable.lua
     ทำให้ GuiObject ลากได้ทั้ง Mouse และ Touch แบบลื่น (ไม่กระตุกเพราะอัปเดตผ่าน RenderStepped
@@ -242,6 +245,7 @@ return Draggable
 
 ]=]
 __sources['FloatingIcon'] = [=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     FloatingIcon.lua
     ปุ่มลอย (Logo) ลากได้ทั้ง Mouse/Touch, จำตำแหน่งล่าสุด (ผ่าน SaveLoad callback ที่ส่งเข้ามา),
@@ -327,6 +331,7 @@ return FloatingIcon
 
 ]=]
 __sources['Sidebar'] = [=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     Sidebar.lua
     เมนูซ้าย 6 รายการตายตัว (Main, AutoFarm, Webhook, ESP, Shop, Setting)
@@ -510,6 +515,7 @@ return Sidebar
 
 ]=]
 __sources['Window'] = [=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     Window.lua
     ประกอบ Header (Logo+Name, Minimize/Close, Search) + Sidebar + Content เข้าด้วยกัน
@@ -790,6 +796,7 @@ return Window
 
 ]=]
 __sources['Card'] = [=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     Card.lua
     กล่อง Section พื้นฐาน ใช้ห่อ element อื่นๆ (Toggle/Button/Dropdown/Slider)
@@ -850,6 +857,7 @@ return Card
 
 ]=]
 __sources['Toggle'] = [=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     Toggle.lua
     แถว label + switch มุมโค้ง เปลี่ยนสถานะด้วย Tween
@@ -933,6 +941,7 @@ return Toggle
 
 ]=]
 __sources['Button'] = [=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     Button.lua
     ปุ่มมุมโค้ง มี hover/press feedback นุ่มนวล
@@ -994,6 +1003,7 @@ return Button
 
 ]=]
 __sources['Dropdown'] = [=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     Dropdown.lua
     กดเพื่อขยายรายการตัวเลือก ปิดเองเมื่อเลือกแล้ว
@@ -1131,6 +1141,7 @@ return Dropdown
 
 ]=]
 __sources['Slider'] = [=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     Slider.lua
     แถบเลื่อนมุมโค้ง ลากด้วย Mouse/Touch ได้ แสดงค่าปัจจุบันด้านขวา
@@ -1264,16 +1275,23 @@ local function __require(name)
     if __cache[name] ~= nil then return __cache[name] end
     local source = __sources[name]
     assert(source, "ModernScriptUI module not found: " .. tostring(name))
-    local chunk, compileError = loadstring(source, "ModernScriptUI/" .. name)
+    local __load = loadstring or load
+    assert(__load, "This executor does not support loadstring/load")
+    local chunk, compileError = __load(source, "ModernScriptUI/" .. name)
     assert(chunk, compileError)
     local result = chunk()
     __cache[name] = result
     return result
 end
+local __global = (getgenv and getgenv()) or _G
+__global.__require = __require
 _G.__require = __require
 
 -- Standalone entry script
-local __entry, __entryError = loadstring([=[
+local __load = loadstring or load
+assert(__load, "This executor does not support loadstring/load")
+local __entry, __entryError = __load([=[
+local __require = ((getgenv and getgenv().__require) or _G.__require)
 --[[
     init_example.client.lua
     ตัวอย่างการประกอบใช้งานทุก Module เข้าด้วยกัน
