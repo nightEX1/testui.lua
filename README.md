@@ -63,4 +63,4 @@ ModernScriptUI/
 loadstring(game:HttpGet("https://raw.githubusercontent.com/nightEX1/testui.lua/main/main.lua"))()
 ```
 
-ไฟล์นี้เป็นตัวโหลดแบบ standalone และจะสร้าง UI จากตัวอย่างใน `init_example.client.lua` ให้ทันที
+ไฟล์ `main.lua` เป็น loader แบบสั้นตามรูปแบบทั่วไป และจะโหลด bundle จาก `src/ModernScriptUI.lua` ก่อนสร้าง UI จากตัวอย่างใน `init_example.client.lua` ให้ทันที
